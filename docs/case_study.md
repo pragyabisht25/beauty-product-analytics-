@@ -1,160 +1,210 @@
 # Case Study: Beauty Product Growth & Recommendation Analytics
 
-**Framework:** Problem → Evidence → Insight → Opportunity → Proposed Solution → MVP → Metrics → Experiment
-
----
+**Approach:** Problem Understanding → Data Analysis → Key Findings → Product Opportunity → Proposed Solution → MVP → Success Metrics → A/B Testing
 
 ## 1. Business Context
 
-A beauty & cosmetics e-commerce platform (Skincare, Makeup, Haircare,
-Fragrance, Personal Care) wants to grow product discovery, conversion,
-engagement, and repeat purchases. This case study walks through a full
-product-analytics investigation on synthetic but internally-consistent
-platform data: 6,000 customers, 330 products, ~200K behavioural events,
-and ~16,000 orders.
+The project is based on a beauty and cosmetics e-commerce platform that sells products across categories such as Skincare, Makeup, Haircare, Fragrance and Personal Care.
 
-## 2. Evidence — What the Data Shows
+The main objective was to understand how customers discover products, interact with them and eventually make a purchase. I wanted to identify where customers were dropping off during their shopping journey and what could be improved to make product discovery easier.
 
-**Discovery funnel is healthy at the top, leaky in the middle.**
-Across the platform: 100,277 product views → 31,904 add-to-carts (31.8%
-view→cart) → 16,252 purchases (50.9% cart→purchase). Roughly 1 in 6 product
-views (16.2%) ever becomes a purchase.
+For this analysis, I worked with a synthetic dataset containing 6,000 customers, 330 products, approximately 200,000 user activity events and around 16,000 orders.
 
-**Browsing and buying don't line up by category.** Skincare and Makeup are
-the two most-viewed *and* most-purchased categories, so there's no simple
-"discovery gap" at the category level — the real gap only shows up one
-level deeper, at the subcategory level.
+## 2. Data Analysis & Key Findings
 
-**Choice-heavy subcategories convert at roughly half the rate of
-low-choice ones.** Subcategories with 20+ near-identical SKUs (Moisturizer,
-Face Serum, Foundation, Lipstick, Shampoo, Sunscreen) show a view→purchase
-rate around **11%**, versus **20%** for subcategories with fewer SKUs
-(e.g., Blush, Body Lotion). The drop-off is worse at *every* stage in
-choice-heavy subcategories: 75% of views never reach the cart (vs 63% in
-low-choice subcategories), and even after add-to-cart, purchase completion
-is weaker (56% drop-off vs 46%).
+After analyzing customer activity, product performance and purchase behaviour, I found a few patterns worth investigating.
 
-**This isn't a wishlist-awareness problem — people are shortlisting, just
-not deciding.** 43 products sit in the "high wishlist, low wishlist→purchase"
-bucket, and 60 products are rated 4.3+ yet convert below the platform
-median — evidence that quality perception alone isn't what's blocking the
-purchase decision.
+### 2.1 Product Discovery Funnel
 
-**Discount is associated with cart adds more than with final purchase.**
-Correlation between discount% and view→cart rate is 0.54, versus 0.64 for
-view→purchase — close enough that we should be cautious reading too much
-into the difference, and in any case this is an observational correlation:
-price-sensitive shoppers may simply gravitate toward already-discounted
-items, so we can't claim discounting *causes* more purchases without a
-controlled test.
+The overall shopping funnel showed that customers were interested in exploring products, but not all of them moved towards a purchase.
 
-**Rating has a much weaker relationship with conversion than expected.**
-View→purchase conversion barely moves across rating bands (roughly 15-16%
-whether a product is rated 3.5 or 4.8), which further supports that the
-bottleneck is upstream of "is this a good product" — it's "which one do I
-pick."
+- Product Views: 100,277
+- Add to Cart: 31,904
+- Purchases: 16,252
 
-*(Supporting charts: `charts/02_choice_heavy_conversion.png`,
-`charts/03_discount_vs_conversion.png`, `charts/04_overall_funnel.png`;
-full numbers in `docs/analysis_output.txt` and `data/derived/`.)*
+Around 31.8% of product views resulted in an add-to-cart action, while 50.9% of cart additions resulted in a purchase. Overall, only 16.2% of product views led to a purchase.
 
-## 3. Insight
+This indicated that there was room to improve the journey between product discovery and purchase.
 
-Users in choice-heavy subcategories show all the signals of *active
-interest* — high views, high wishlist activity — but convert at roughly
-half the rate of users browsing subcategories with fewer, more
-differentiated options. Ratings and discounts, the two levers most product
-teams reach for first, explain very little of this gap. The pattern points
-to **decision friction from too many similar options**, not a lack of
-interest or a quality/price problem.
+### 2.2 Category and Subcategory Performance
+
+Skincare and Makeup were the most viewed and purchased categories. This suggested that the overall category-level demand was not the main issue.
+
+However, when I looked deeper into individual subcategories, I noticed a difference in purchase conversion.
+
+Subcategories with 20 or more similar products, including Moisturizer, Face Serum, Foundation, Lipstick, Shampoo and Sunscreen, had approximately 11% view-to-purchase conversion.
+
+In comparison, subcategories with fewer and more differentiated products, such as Blush and Body Lotion, had around 20% conversion.
+
+Customers browsing these choice-heavy subcategories also showed higher drop-offs at different stages:
+
+- Around 75% of views did not lead to an add-to-cart action, compared to 63% in low-choice subcategories.
+- Cart-to-purchase drop-off was around 56%, compared to 46% in low-choice subcategories.
+
+This made product selection a more interesting area to investigate.
+
+### 2.3 Wishlist Activity and Product Ratings
+
+I also looked at products that received attention but did not convert well.
+
+- 43 products had high wishlist activity but low wishlist-to-purchase conversion.
+- 60 products had ratings of 4.3 or above but still converted below the platform median.
+
+This suggested that customers were interested in these products, but their interest was not always turning into purchases.
+
+It also showed that good ratings alone were not enough to explain purchase behaviour.
+
+### 2.4 Impact of Discounts
+
+I checked the relationship between discounts and purchase behaviour.
+
+The correlation between discount percentage and view-to-cart conversion was 0.54, while the correlation with view-to-purchase conversion was 0.64.
+
+Discounts showed a positive association with conversion, but this does not necessarily mean that discounts directly caused more purchases. Other factors, such as customer preferences and existing product demand, could also influence these results.
+
+### 2.5 Impact of Product Ratings
+
+I expected highly rated products to have noticeably better conversion rates. However, the analysis showed that view-to-purchase conversion remained around 15–16% across different rating bands.
+
+This was another indication that product ratings alone were not solving the purchase decision problem.
+
+*Supporting analysis: `charts/02_choice_heavy_conversion.png`, `charts/03_discount_vs_conversion.png`, `charts/04_overall_funnel.png`. Detailed results are available in `docs/analysis_output.txt` and `data/derived/`.*
+
+## 3. Key Insight
+
+The most important finding was the difference between customer interest and actual purchases in subcategories with many similar products.
+
+Customers were viewing products and adding them to their wishlists, but a much smaller percentage were completing their purchases.
+
+After looking at ratings, discounts and funnel performance, I found that the problem was not simply a lack of product interest or product quality.
+
+One possible reason was the difficulty of choosing between too many similar options.
+
+This led me to explore how a better product comparison experience could help customers make decisions.
 
 ## 4. Product Opportunity
 
-**Help users compare similar products quickly, so shortlisting turns into
-a confident decision instead of a stalled one.**
+The opportunity was to make product selection easier, especially in subcategories where customers had many similar options.
 
-If the blocker is "I've viewed and even wishlisted four similar
-moisturizers, but I can't tell which one is actually different or better
-for me," then the fix isn't more product listings or bigger discounts —
-it's a lightweight way to put a short list side by side.
+For example, a customer might shortlist four different moisturizers but still struggle to understand which one is more suitable based on price, ratings, benefits or skin type.
 
-## 5. Proposed Solution: "Compare Products"
+Instead of showing more products or offering additional discounts, the platform could help customers compare the products they were already interested in.
 
-Let users select up to 3 products **within the same subcategory** and see
-them side by side on price, discount, rating, reviews, and key listed
-attributes (skin/hair suitability, key benefits) — with a direct
-add-to-cart action from the comparison screen. Full detail in
-`docs/PRD.md`.
+## 5. Proposed Solution: Compare Products Feature
 
-## 6. MVP
+Based on the findings, I proposed a feature called **Compare Products**.
 
-- "Add to Compare" on listing-page cards and the product detail page
-  (max 3, same subcategory only)
-- Compare tray + comparison screen with core attributes and per-item
-  add-to-cart
-- "Compare with similar products" prompt on the product detail page for
-  choice-heavy subcategories specifically (where the data shows the
-  problem concentrated)
-- Out of scope for v1: cross-subcategory comparison, AI recommendations,
-  ingredient-matching logic, comparing review *content*
+The feature would allow customers to select up to three products from the same subcategory and view their details side by side.
+
+Customers would be able to compare:
+
+- Product price and discount
+- Customer ratings and reviews
+- Skin or hair suitability
+- Key product benefits
+- Other important product details
+
+A direct Add to Cart option would also be available from the comparison screen.
+
+The aim is to help customers understand the differences between similar products without having to open and check each product separately.
+
+## 6. MVP Scope
+
+For the first version, I kept the feature limited to the most important functionality.
+
+**Included in MVP:**
+
+- Add to Compare option on product listing cards and product detail pages.
+- Selection of a maximum of three products from the same subcategory.
+- A comparison tray to manage selected products.
+- A comparison screen showing the main product attributes.
+- Add to Cart option for each product.
+- Comparison suggestions in the six identified choice-heavy subcategories.
+
+**Not included in the first version:**
+
+- Comparison across different subcategories.
+- AI-based product recommendations.
+- Ingredient-matching functionality.
+- Comparison of detailed customer review content.
+
+Keeping the first version focused would make it easier to test whether the feature actually helps customers.
 
 ## 7. Success Metrics
 
-- **Primary:** view→purchase conversion in choice-heavy subcategories
-- **Secondary:** feature adoption rate, comparison-to-purchase conversion,
-  view→cart rate in choice-heavy subcategories, repeat feature usage
-- **Guardrails:** overall site conversion, product detail page engagement
-  time, listing-page load time
+I identified the following metrics to evaluate the feature after launch.
 
-## 8. Experiment Design (A/B Test)
+**Primary Metric**
 
-**Hypothesis:** Giving users a low-effort way to compare similar products
-within choice-heavy subcategories will reduce decision friction and
-increase view→purchase conversion, without hurting overall site
-performance.
+- View-to-purchase conversion rate in choice-heavy subcategories.
 
-- **Population:** Sessions/users browsing choice-heavy subcategories
-  (Moisturizer, Face Serum, Foundation, Lipstick, Shampoo, Sunscreen),
-  randomized at the user level to avoid contamination.
-- **Control:** Existing product experience (no Compare feature).
-- **Variant:** Product listing + PDP with "Add to Compare" and the
-  comparison screen enabled.
-- **Primary metric:** View→purchase conversion rate within choice-heavy
-  subcategories.
-- **Secondary metrics:** Feature adoption rate, comparison-to-purchase
-  conversion, view→cart rate, cart→purchase rate.
-- **Guardrail metrics:** Overall conversion rate (platform-wide, to catch
-  any negative spillover), average page load time, PDP engagement time.
-- **Duration/sample size:** Run long enough to reach adequate power on the
-  primary metric at the platform's typical weekly view volume for these
-  subcategories (~7,100 views/week per subcategory in this dataset) —
-  in practice, run a power calculation off the current 11% baseline
-  conversion and a minimum detectable effect (e.g., +2pts) before
-  launching.
-- **Success criteria:** Statistically significant lift in the primary
-  metric with no statistically significant regression in any guardrail
-  metric. If adoption is high but conversion doesn't move, that's a signal
-  the bottleneck is something other than comparison friction (e.g., price
-  or trust), which would redirect the next iteration.
+**Secondary Metrics**
 
-## 9. Limitations & Honest Caveats
+- Percentage of users using the Compare feature.
+- Conversion rate after using the comparison screen.
+- View-to-cart conversion rate.
+- Repeat usage of the feature.
 
-- All findings here come from **observational, synthetic data** — the
-  choice-heavy vs low-choice conversion gap is a strong *correlation*, but
-  only a real A/B test can confirm the comparison feature *causes* the
-  lift.
-- Discount and rating relationships are correlational; other unmeasured
-  factors (brand trust, delivery time, product imagery quality) could
-  explain part of the gap and aren't modeled here.
-- The "choice-heavy" flag is defined by SKU count per subcategory as a
-  simplification — a real platform would want to validate this definition
-  against actual user research (e.g., session recordings, surveys) before
-  fully committing engineering resources to the comparison feature.
+**Guardrail Metrics**
+
+- Overall platform conversion rate.
+- Time spent on product detail pages.
+- Product listing page load time.
+
+These metrics would help measure both feature usage and its actual impact on purchases.
+
+## 8. A/B Testing Plan
+
+Before making the feature available to everyone, I would test it through an A/B experiment.
+
+**Hypothesis:**
+
+Providing a simple way to compare similar products will help customers make purchase decisions more easily and improve view-to-purchase conversion in choice-heavy subcategories.
+
+**Experiment Setup**
+
+- **Target Users:** Customers browsing Moisturizer, Face Serum, Foundation, Lipstick, Shampoo and Sunscreen.
+- **Control Group:** Users continue with the existing shopping experience.
+- **Variant Group:** Users get access to the Compare Products feature.
+- **Randomization:** Users are assigned to groups at the user level to avoid mixing experiences.
+
+**Metrics to Track**
+
+The primary metric would be view-to-purchase conversion in the selected subcategories.
+
+Other metrics would include feature adoption, comparison-to-purchase conversion, view-to-cart conversion and cart-to-purchase conversion.
+
+Overall conversion, page loading time and product detail page engagement would be monitored as guardrail metrics.
+
+**Experiment Duration and Sample Size**
+
+The experiment should run long enough to collect sufficient data for a reliable result.
+
+Based on the dataset, the identified subcategories have approximately 7,100 views per week per subcategory. Before launching, I would calculate the required sample size using the existing 11% conversion baseline and a minimum detectable improvement of 2 percentage points.
+
+**Success Criteria**
+
+The feature would be considered successful if it produces a statistically significant improvement in the primary metric without a meaningful negative impact on the guardrail metrics.
+
+If customers use the feature but purchase conversion does not improve, I would investigate other possible reasons, such as pricing, product trust or missing product information.
+
+## 9. Limitations
+
+There are a few limitations to consider while interpreting these findings:
+
+- The analysis uses synthetic data, not actual customer data from a live e-commerce platform.
+- The difference in conversion between choice-heavy and low-choice subcategories shows an association, not proof that having more products causes lower conversion.
+- Discount and rating relationships are also observational. Other factors, such as brand trust, delivery time and product images, were not included in the analysis.
+- The choice-heavy classification is based on the number of similar SKUs in each subcategory. In a real business, this definition should also be validated through customer feedback, surveys and user behaviour research.
+
+A real A/B test would be required to understand whether the proposed feature actually improves conversion.
 
 ## 10. Final Recommendation
 
-Ship a scoped MVP of "Compare Products" for the six identified
-choice-heavy subcategories, validate with the A/B test above before a
-platform-wide rollout, and use the adoption + comparison-to-purchase
-metrics to decide whether to extend the feature (e.g., AI-assisted
-recommendations, cross-subcategory comparison) in a later iteration.
+Based on the analysis, I would recommend testing the Compare Products feature in the six identified choice-heavy subcategories first.
+
+The initial rollout should be limited to an MVP, followed by an A/B test to measure its impact on customer behaviour and purchase conversion.
+
+If the results are positive, the feature could be extended to other categories, with further improvements such as personalized recommendations in future versions.
+
+The main goal is to make product selection easier and help customers move from browsing and shortlisting to making a purchase.

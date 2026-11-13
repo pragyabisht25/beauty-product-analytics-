@@ -1,146 +1,252 @@
-# PRD — "Compare Products" (Beauty Product Comparison Tool)
+# Product Requirements Document (PRD)
+## Compare Products – Beauty Product Comparison Feature
 
-**Product:** Beauty & Cosmetics E-commerce Platform (Nykaa-style)
-**Author:** Product Analyst / APM candidate
-**Status:** Draft for review
-**Related analysis:** `docs/case_study.md`, `data/derived/subcategory_funnel.csv`
+**Project:** Beauty Product Growth & Recommendation Analytics  
+**Platform:** Beauty & Cosmetics E-commerce  
+**Document Status:** Draft  
+**Version:** 1.0  
+**Related Documents:** `docs/case_study.md`, `data/derived/subcategory_funnel.csv`
 
 ---
 
 ## 1. Problem Statement
 
-Shoppers browsing **choice-heavy subcategories** — those with 20+ near-identical
-SKUs, such as Moisturizers, Face Serums, Foundation, Lipstick, and Shampoo —
-view products at a similar or higher rate than shoppers in low-choice
-subcategories, but convert at roughly **half the rate**:
+During the analysis, I found that customers browsing subcategories with a large number of similar products were less likely to make a purchase compared to customers browsing subcategories with fewer options.
 
-- Choice-heavy subcategories: **11% view→purchase conversion**
-- Low-choice subcategories: **20% view→purchase conversion**
-- Choice-heavy view→cart drop-off is **75%**, vs **63%** for low-choice
-  subcategories
+The analysis showed the following difference:
 
-Wishlist activity is also high in these subcategories, which suggests
-shoppers *are* interested and *are* shortlisting products — they are
-comparing mentally across browser tabs / product pages, but the platform
-gives them no side-by-side way to do this. The likely result: decision
-fatigue, repeated back-and-forth between similar product pages, and
-abandonment before add-to-cart or before final purchase.
+- Choice-heavy subcategories: 11% view-to-purchase conversion.
+- Low-choice subcategories: 20% view-to-purchase conversion.
+- View-to-cart drop-off in choice-heavy subcategories: 75%.
+- View-to-cart drop-off in low-choice subcategories: 63%.
 
-This is a **discovery-to-decision problem**, not a discovery-to-awareness
-problem — users are finding the products, they're just not confidently
-picking one.
+Subcategories such as Moisturizer, Face Serum, Foundation, Lipstick and Shampoo showed this pattern.
+
+At the same time, wishlist activity in these subcategories was relatively high. This suggested that customers were interested in the products but were not always moving forward with a purchase.
+
+One possible reason is that customers have difficulty choosing between similar products. They may visit multiple product pages, compare details manually and switch between tabs to decide which product suits them better.
+
+Currently, there is no simple way to compare these products side by side.
+
+This creates an opportunity to improve the product selection experience and make purchase decisions easier.
 
 ## 2. Target Users
 
-- Shoppers actively browsing within a single subcategory that has many
-  similar SKUs (e.g., comparing 4-5 moisturizers or foundations before
-  deciding).
-- New and price/ingredient-conscious shoppers who lack brand familiarity
-  and rely on browsing many options.
-- Secondary: returning shoppers restocking a category who want to check if
-  a similar-but-cheaper or better-rated alternative exists.
+The feature is mainly intended for the following customer groups:
+
+**Primary Users**
+
+- Customers exploring subcategories with many similar products.
+- Customers who shortlist multiple products before making a purchase.
+- New shoppers who are not familiar with different beauty brands and product options.
+- Customers who compare products based on price, ratings, reviews and product benefits.
+
+**Secondary Users**
+
+- Returning customers who want to explore better-priced or better-rated alternatives before purchasing again.
 
 ## 3. User Story
 
-> As a beauty shopper comparing several similar products, I want to see
-> their price, discount, rating, reviews, and key attributes side by side,
-> so that I can confidently pick the right one without opening and
-> re-opening multiple product pages.
+"As a beauty shopper, I want to compare multiple similar products in one place based on their price, ratings, reviews and important features, so that I can understand the differences and choose a product without repeatedly opening different product pages."
 
-## 4. Goals
+## 4. Product Goals
 
-- Reduce the decision friction that causes high view→cart and cart→purchase
-  drop-off specifically in choice-heavy subcategories.
-- Increase view→purchase conversion in choice-heavy subcategories, closing
-  some of the gap versus low-choice subcategories.
-- Give users a reason to add multiple shortlisted items to a single
-  comparison view instead of tab-switching or abandoning.
-- Surface objective differentiators (price, discount, rating, reviews) so
-  users don't have to manually reconcile scattered information.
+The main goals of this feature are:
 
-## 5. Non-Goals (out of scope for MVP)
+- Make it easier for customers to compare similar products.
+- Reduce the number of customers leaving product pages without adding anything to their cart.
+- Improve view-to-purchase conversion in choice-heavy subcategories.
+- Help customers understand product differences without manually checking multiple pages.
+- Provide a smoother shopping experience for customers who are still deciding between shortlisted products.
 
-- Comparing products **across** subcategories (e.g., a serum vs a
-  moisturizer) — comparison only makes sense within a subcategory.
-- AI-generated "which one is right for you" recommendations — that's a v2
-  personalization feature, not MVP.
-- Comparing more than 3 products at once (keeps the UI readable on mobile).
-- Ingredient-level allergen/skin-type filtering logic — MVP will surface
-  listed ingredients as text, not a matching algorithm.
-- Comparison of user-generated review *content* (only aggregate rating and
-  review count are shown in MVP).
+## 5. Scope and Non-Goals
 
-## 6. MVP Feature Scope
+The first version will focus on basic product comparison. Some advanced functionalities will be considered for future versions.
 
-1. **"Add to Compare" action** on product cards in listing/search pages and
-   on the product detail page (max 3 products at a time, same subcategory).
-2. **Compare tray**: a persistent small bar showing selected items with a
-   "Compare Now" CTA once 2+ items are selected.
-3. **Comparison screen** showing, side by side:
-   - Product image, name, brand
-   - Price and discount (and effective price after discount)
-   - Rating and review count
-   - Key listed attributes (e.g., skin type suitability, key benefits,
-     volume/size) pulled from existing product data
-   - "Add to Cart" button per product, directly from the comparison screen
-4. **Entry points**: comparison tray accessible from category/subcategory
-   listing pages (where choice-heavy browsing happens) and from the product
-   detail page ("Compare with similar products" suggesting 2 same-subcategory
-   alternatives).
+**Not included in the MVP:**
+
+- Comparing products from different subcategories, such as a serum and a moisturizer.
+- AI-based product recommendations or personalized suggestions.
+- Comparing more than three products at once.
+- Automatic ingredient matching or allergen detection.
+- Detailed comparison of customer review content.
+
+The focus is to first understand whether a simple comparison feature can improve purchase decisions.
+
+## 6. MVP Feature Requirements
+
+The first version of the feature will include the following functionalities:
+
+### 6.1 Add to Compare
+
+- An Add to Compare option will be available on product listing cards and product detail pages.
+- Customers can select a maximum of three products.
+- Products must belong to the same subcategory.
+- Users should be able to remove a selected product and replace it with another.
+
+### 6.2 Compare Tray
+
+- A small comparison tray will appear when customers select products.
+- It will display the selected products.
+- A Compare Now button will become available after selecting at least two products.
+- Customers can remove products directly from the tray.
+
+### 6.3 Product Comparison Screen
+
+The comparison screen will display selected products side by side.
+
+The following details will be included:
+
+| Product Information | Details |
+|---|---|
+| Basic Details | Product image, name and brand |
+| Pricing | Original price, discount and final price |
+| Ratings | Average rating and review count |
+| Product Attributes | Skin/hair suitability and key benefits |
+| Product Size | Volume or quantity |
+| Action | Add to Cart button |
+
+Customers should be able to add a product to their cart directly from this screen.
+
+### 6.4 Feature Entry Points
+
+The feature will be accessible from:
+
+- Product listing and search pages through the Add to Compare option.
+- Product detail pages through a Compare with Similar Products option.
+- The comparison tray, which will remain accessible while browsing.
+
+For the first version, the feature will focus on the identified choice-heavy subcategories.
 
 ## 7. User Flow
 
+The expected customer journey is:
+
+```text
+Search / Category Browsing
+          |
+          v
+    Product Listing
+          |
+          v
+   Select 2-3 Products
+          |
+          v
+      Compare Tray
+          |
+          v
+  Comparison Screen
+          |
+          v
+   Compare Product Details
+          |
+          v
+      Select Product
+          |
+          v
+       Add to Cart
+          |
+          v
+        Purchase
 ```
-Search / Category Browse
-        │
-        ▼
-Product Listing Page  ──(select 2-3 products)──▶  Compare Tray
-        │                                              │
-        ▼                                              ▼
-  Product Detail Page ──(Compare with similar)──▶ Comparison Screen
-                                                        │
-                                                        ▼
-                                                 Product Selection
-                                                        │
-                                                        ▼
-                                                    Add to Cart
-                                                        │
-                                                        ▼
-                                                     Purchase
-```
+
+Customers can also reach the comparison experience from a product detail page using the Compare with Similar Products option.
 
 ## 8. Success Metrics
 
-**Primary metric**
-- View→purchase conversion rate in choice-heavy subcategories (target:
-  close ~30-40% of the current 9-point gap vs low-choice subcategories
-  within one quarter of full rollout).
+The feature will be evaluated based on customer usage and its impact on purchase conversion.
 
-**Secondary metrics**
-- Feature adoption rate: % of sessions in choice-heavy subcategories that
-  use "Add to Compare."
-- Comparison-to-purchase conversion: % of comparison-screen sessions that
-  result in an add-to-cart within the same session.
-- Add-to-cart rate in choice-heavy subcategories (view→cart).
-- Repeat usage: % of users who use Compare more than once across sessions.
+### 8.1 Primary Metric
 
-**Guardrail metrics**
-- Overall site conversion rate (should not regress due to added UI
-  friction/latency).
-- Product detail page engagement time (a large negative shift could signal
-  users are comparing instead of reading full descriptions, losing
-  information).
-- Page load time / Core Web Vitals on listing pages (compare tray must not
-  degrade performance).
+**View-to-Purchase Conversion Rate**
 
-## 9. Assumptions & Risks
+The main objective is to improve purchase conversion in choice-heavy subcategories.
 
-- Assumes the drop-off is driven by decision difficulty, not by
-  price/quality dissatisfaction — validated only by an A/B test, not by
-  observational data alone (see `case_study.md` limitations section).
-- Risk: users may use Compare but still not purchase if the underlying
-  issue is price sensitivity rather than comparison friction — the A/B test
-  is designed to detect this.
-- Risk: low awareness of the new feature if entry points aren't prominent
-  enough — mitigated by placing "Add to Compare" directly on listing page
-  cards, where browsing already happens.
+The initial target is to close approximately 30–40% of the existing 9-percentage-point conversion gap between choice-heavy and low-choice subcategories within one quarter of full rollout.
+
+### 8.2 Secondary Metrics
+
+- **Feature Adoption Rate:** Percentage of sessions in which customers use the Add to Compare option.
+- **Comparison-to-Purchase Conversion:** Percentage of comparison-screen sessions that result in an add-to-cart action during the same session.
+- **View-to-Cart Rate:** Whether more customers add products to their carts after using the feature.
+- **Repeat Usage:** Percentage of customers who use the comparison feature more than once.
+
+### 8.3 Guardrail Metrics
+
+These metrics will help ensure that the new feature does not negatively affect the existing shopping experience.
+
+- Overall site conversion rate.
+- Product detail page engagement time.
+- Listing page loading time and Core Web Vitals.
+
+## 9. Assumptions and Risks
+
+### Assumptions
+
+- Customers in choice-heavy subcategories may be facing difficulty while comparing similar products.
+- Product price, ratings, reviews and benefits are important factors during product selection.
+- Showing these details together may help customers make decisions more easily.
+
+These assumptions are based on the available analysis and need to be validated through an experiment.
+
+### Potential Risks and Mitigation
+
+**Risk 1: Customers use the feature but still do not purchase.**
+
+The main issue may be price, product quality or lack of trust rather than comparison difficulty.
+
+*Mitigation:* Track comparison usage and purchase conversion separately to understand where customers are dropping off.
+
+**Risk 2: Customers do not notice the feature.**
+
+If the option is difficult to find, customers may continue using the existing shopping experience.
+
+*Mitigation:* Place Add to Compare directly on product listing cards and product detail pages.
+
+**Risk 3: The feature affects page performance.**
+
+An additional comparison tray or interface could increase page loading time.
+
+*Mitigation:* Keep the comparison interface lightweight and monitor page performance after implementation.
+
+**Risk 4: Too many product details make comparison difficult.**
+
+Showing too much information may make the screen confusing, especially on mobile devices.
+
+*Mitigation:* Keep the MVP limited to the most useful product attributes.
+
+## 10. Validation Plan
+
+Before releasing the feature across the platform, I would validate it through an A/B test.
+
+- **Control Group:** Customers continue using the existing shopping experience.
+- **Variant Group:** Customers get access to the Compare Products feature.
+- **Target Audience:** Customers browsing the six identified choice-heavy subcategories.
+- **Primary Evaluation:** Compare view-to-purchase conversion between both groups.
+- **Additional Evaluation:** Track feature adoption, add-to-cart behaviour and guardrail metrics.
+
+The feature should be expanded only if the experiment shows a meaningful improvement in purchase conversion without negatively affecting the overall shopping experience.
+
+## 11. Future Improvements
+
+If the initial version performs well, the feature can be improved further.
+
+Possible future additions include:
+
+- Personalized product suggestions based on customer preferences.
+- Better ingredient and skin-type comparisons.
+- Comparison across additional product categories.
+- More detailed product review comparisons.
+- Recommendations based on previously viewed or shortlisted products.
+
+These improvements can be considered after evaluating the results of the first version.
+
+## 12. Final Recommendation
+
+Based on the analysis, I recommend starting with a simple Compare Products feature for the six identified choice-heavy subcategories.
+
+The first version should focus on helping customers compare products using the information already available on the platform.
+
+Instead of introducing multiple advanced features at once, the MVP should first be tested to understand whether easier product comparison actually improves customer decisions and purchase conversion.
+
+The results of the experiment will help decide whether the feature should be expanded or improved further.

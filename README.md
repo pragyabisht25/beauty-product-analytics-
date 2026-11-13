@@ -1,118 +1,129 @@
 # Beauty Product Growth & Recommendation Analytics
 
-An end-to-end **Product Management + Product Analytics case study** for a
-beauty & cosmetics e-commerce platform (Nykaa-style), built as an
-APM / Product Analyst / Product Ops portfolio project.
+## About the Project
 
-This is **not a dashboard project**. It's a full product-thinking
-exercise: `User Problem → Data Analysis → Product Insight → Product
-Opportunity → Feature Proposal → MVP → Success Metrics → Measurement`.
+This project focuses on analyzing a beauty and cosmetics e-commerce platform (similar to Nykaa) to understand customer behaviour, product performance and sales trends.
 
-**→ Start here: [`docs/case_study.md`](docs/case_study.md)** — the full
-narrative, with the actual finding and the product decision it drove.
+I used SQL, Python and Power BI to explore the dataset, identify patterns and understand areas where the shopping experience could be improved.
 
----
+Along with data analysis, I also worked on identifying a product-related problem and suggesting a possible feature to address it.
 
-## The One-Line Finding
+The project covers the complete process from understanding the problem and analyzing data to suggesting improvements and defining how their impact can be measured.
 
-Subcategories with 20+ similar products (Moisturizer, Face Serum,
-Foundation, Lipstick, Shampoo, Sunscreen) convert **~11%** view→purchase
-vs **~20%** for subcategories with fewer, more differentiated options —
-despite equal or higher browsing/wishlist activity. This shaped a scoped
-MVP: a **"Compare Products"** feature, validated by A/B test design before
-platform-wide rollout.
+**Start here:** [Case Study](docs/case_study.md)
+
+## Key Finding
+
+One of the main findings was that subcategories with 20 or more similar products, such as Moisturizer, Face Serum, Foundation, Lipstick, Shampoo and Sunscreen, had around 11% view-to-purchase conversion.
+
+In comparison, subcategories with fewer and more differentiated products had around 20% conversion.
+
+This showed that customers were browsing and adding products to their wishlist but were not converting into purchases at the same rate.
+
+Based on this finding, I proposed a **Compare Products** feature to help customers compare similar products before making a purchase.
 
 ## Project Structure
 
-```
+```text
 beauty-product-analytics/
-├── README.md                      <- you are here
+│
+├── README.md
 ├── data/
 │   ├── customers.csv
 │   ├── products.csv
 │   ├── user_events.csv
 │   ├── orders.csv
 │   ├── order_items.csv
-│   └── derived/                   <- analysis output tables (funnel, spend, etc.)
+│   └── derived/
+│
 ├── scripts/
-│   ├── 01_generate_data.py        <- synthetic data generation
-│   └── 02_analysis.py             <- full analysis (5 sections) + chart export
-├── charts/                        <- PNG charts from the analysis
+│   ├── 01_generate_data.py
+│   └── 02_analysis.py
+│
+├── charts/
+│
 ├── sql/
-│   ├── 01_schema.sql              <- MySQL DDL + LOAD DATA templates
-│   └── 02_analysis_queries.sql    <- all analysis queries (CTEs, window fns)
+│   ├── 01_schema.sql
+│   └── 02_analysis_queries.sql
+│
 ├── powerbi/
-│   └── dashboard_design.md        <- 4-page dashboard spec + DAX measures
+│   └── dashboard_design.md
+│
 └── docs/
-    ├── case_study.md              <- ⭐ the main deliverable
-    ├── PRD.md                     <- full Product Requirements Document
-    ├── analysis_output.txt        <- raw console output from 02_analysis.py
-    ├── interview_qna.md           <- 10 APM/Analyst interview Q&A
-    └── resume_description.md      <- resume bullets + long-form write-up
+    ├── case_study.md
+    ├── PRD.md
+    ├── analysis_output.txt
+    ├── interview_qna.md
+    └── resume_description.md
 ```
 
-## How to Reproduce
+## Analysis Performed
+
+The analysis covers the following areas:
+
+1. **Customer Behaviour:** Customer segments, repeat purchases, high-value customers and browsing patterns.
+2. **Product Performance:** Product and subcategory performance, views, purchases and conversion rates.
+3. **Pricing and Discounts:** Relationship between discounts, product prices and purchase behaviour.
+4. **Reviews and Ratings:** How product ratings and review counts relate to customer engagement and purchases.
+5. **Product Discovery:** Analysis of the shopping funnel to identify where customers drop off before purchasing.
+
+## Product Recommendation
+
+Based on the analysis, I proposed a **Compare Products** feature.
+
+The idea is to allow customers to compare similar products based on price, ratings, ingredients and other product details.
+
+The proposed feature also includes an A/B testing plan to measure whether it improves product discovery and purchase conversion before a wider rollout.
+
+## Dataset Information
+
+The project uses a synthetic beauty e-commerce dataset containing:
+
+| Dataset | Records |
+|---|---:|
+| Customers | 6,000 |
+| Products | 330 |
+| User Events | Around 200,000 |
+| Orders | Around 16,250 |
+| Order Items | Around 16,250 |
+
+The dataset includes customer details, product information, browsing activity, orders and purchase records.
+
+## Tools & Technologies
+
+- **Python:** Pandas, NumPy and Matplotlib
+- **SQL:** MySQL, joins, CTEs and window functions
+- **Power BI:** Data visualization and dashboard development
+- **Excel/CSV:** Dataset handling
+
+## How to Run
+
+**Python Analysis**
 
 ```bash
 cd scripts
-python3 01_generate_data.py     # writes CSVs to ../data
-python3 02_analysis.py          # runs analysis, writes charts + derived tables
+python 01_generate_data.py
+python 02_analysis.py
 ```
 
-For SQL: create the schema with `sql/01_schema.sql`, load the CSVs from
-`data/` (templates included in the schema file), then run
-`sql/02_analysis_queries.sql`.
+**SQL Analysis**
 
-For Power BI: follow `powerbi/dashboard_design.md` — import the CSVs (or
-connect to MySQL), add the listed DAX measures, and build the four pages.
+1. Run `sql/01_schema.sql` to create the database tables.
+2. Load the CSV files into the respective tables.
+3. Run `sql/02_analysis_queries.sql`.
 
-## Dataset Summary
+**Power BI**
 
-| Table | Rows | Notes |
-|---|---|---|
-| customers | 6,000 | age group, gender, city, new/returning, signup date |
-| products | 330 | 5 categories, 19 subcategories, price/discount/rating/reviews |
-| user_events | ~200,000 | search, product_view, wishlist, add_to_cart, purchase, review |
-| orders | ~16,250 | order-level totals |
-| order_items | ~16,250 | line-item detail (quantity, selling price) |
+Import the dataset into Power BI and follow the dashboard design and measures documented in the `powerbi/` folder.
 
-The data is synthetic but **not random** — funnel conversion rates,
-discount effects, and rating effects are deliberately modeled with
-realistic (and realistically imperfect) relationships so the analysis has
-something genuine to find, rather than a pre-baked "correct answer."
+## Project Documentation
 
-## Analysis Covered
-
-1. **Customer behaviour** — segments, high-value customers, browsing vs.
-   purchasing patterns, repeat purchase mix
-2. **Product performance** — funnel per product/subcategory, high-view/
-   low-conversion products, high-rated/low-sales products
-3. **Pricing & discount** — discount-band conversion, price quintiles,
-   explicit correlation-vs-causation discussion
-4. **Reviews & ratings** — rating-band conversion, review count vs.
-   engagement
-5. **Product discovery funnel** — overall funnel, and where choice-heavy
-   vs. low-choice subcategories diverge
-
-Full numbers: [`docs/analysis_output.txt`](docs/analysis_output.txt)
-
-## Product Deliverables
-
-- **Case study:** [`docs/case_study.md`](docs/case_study.md)
-- **PRD:** [`docs/PRD.md`](docs/PRD.md)
-- **A/B test design:** included in the case study, section 8
-- **Interview prep:** [`docs/interview_qna.md`](docs/interview_qna.md)
-
-## Tech Stack
-
-Python (Pandas, NumPy, Matplotlib) · SQL (MySQL, CTEs & window functions)
-· Power BI (design spec + DAX) · Excel/CSV
+- [Case Study](docs/case_study.md)
+- [Product Requirements Document](docs/PRD.md)
+- [Analysis Output](docs/analysis_output.txt)
+- [Interview Questions & Answers](docs/interview_qna.md)
+- [Resume Description](docs/resume_description.md)
 
 ## Limitations
 
-This project uses synthetic data with intentionally embedded patterns —
-it demonstrates the *analysis-to-product-decision workflow*, not a claim
-about real Nykaa/beauty-platform user behaviour. See
-[`docs/case_study.md`](docs/case_study.md#9-limitations--honest-caveats)
-for the full discussion of what would need to change with real production
-data.
+The project uses synthetic data with predefined patterns for analysis. The findings are useful for understanding customer behaviour and exploring product-related improvements, but they should not be treated as actual results from Nykaa or any other real e-commerce platform.

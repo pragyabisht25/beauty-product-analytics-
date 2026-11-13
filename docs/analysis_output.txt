@@ -1,0 +1,152 @@
+======================================================================
+1. CUSTOMER BEHAVIOUR
+======================================================================
+
+New vs Returning customers:
+new_or_returning
+Returning    4073
+New          1927
+Name: count, dtype: int64
+Returning-customer share: 67.9%
+
+Revenue & orders by age group:
+           orders      revenue  avg_order_value
+age_group                                      
+25-34        6037 2,537,034.90           420.20
+18-24        5273 2,257,721.80           428.20
+35-44        3241 1,389,262.90           428.70
+45-54        1701   711,701.30           418.40
+
+Most-viewed categories:
+category
+Skincare         30240
+Makeup           27401
+Haircare         20785
+Personal Care    13221
+Fragrance         8630
+Name: count, dtype: int64
+
+Most-purchased categories:
+category
+Skincare         4336
+Makeup           4213
+Haircare         3460
+Personal Care    2561
+Fragrance        1682
+Name: count, dtype: int64
+
+Top 10% customers by spend contribute 27.9% of total revenue
+(min spend to be in top 10%: Rs 2,627)
+
+======================================================================
+2. PRODUCT PERFORMANCE
+======================================================================
+
+High-view / low-conversion products (views >= 25), sample of 15:
+ product_id      category     subcategory  product_view  purchase  view_to_purchase_rate
+       1323 Personal Care      Hand Cream           555        80                   0.14
+       1328 Personal Care      Hand Cream           547        81                   0.15
+       1293     Fragrance Deodorant Spray           463        63                   0.14
+       1292     Fragrance Deodorant Spray           455        62                   0.14
+       1224      Haircare         Shampoo           380        56                   0.15
+       1210        Makeup           Blush           375        48                   0.13
+       1201        Makeup           Blush           375        51                   0.14
+       1257      Haircare        Hair Oil           373        50                   0.13
+       1220      Haircare         Shampoo           371        39                   0.11
+       1200        Makeup           Blush           371        54                   0.15
+       1230      Haircare         Shampoo           370        39                   0.11
+       1214      Haircare         Shampoo           369        27                   0.07
+       1255      Haircare        Hair Oil           369        45                   0.12
+       1227      Haircare         Shampoo           365        27                   0.07
+       1231      Haircare         Shampoo           364        37                   0.10
+
+High-rated (>=4.3) but low-sales products: 68 of 330 eligible
+High-wishlist but low wishlist->purchase products: 43
+
+*** KEY FINDING: Choice-heavy vs low-choice subcategories ***
+                                     products  ...  view_to_purchase_rate
+choice_heavy_subcategory                       ...                       
+Low-choice subcategory (<20 SKUs)         172  ...                   0.20
+Choice-heavy subcategory (20+ SKUs)       158  ...                   0.11
+
+[2 rows x 4 columns]
+
+Subcategory funnel (worst 8 by view->purchase conversion):
+subcategory  products  choice_heavy  views  view_to_cart_rate  cart_to_purchase_rate  view_to_purchase_rate
+ Foundation        26          True   7073               0.24                   0.43                   0.11
+   Lipstick        32          True   6830               0.25                   0.44                   0.11
+    Shampoo        20          True   7160               0.24                   0.45                   0.11
+ Face Serum        30          True   7128               0.25                   0.43                   0.11
+Moisturizer        28          True   7147               0.26                   0.44                   0.11
+  Sunscreen        22          True   6925               0.28                   0.46                   0.13
+Body Lotion        12         False   4300               0.34                   0.52                   0.18
+      Blush        12         False   4429               0.36                   0.52                   0.19
+
+======================================================================
+3. PRICING & DISCOUNT ANALYSIS
+======================================================================
+
+Conversion by discount band:
+               products  ...  avg_view_to_purchase
+discount_band            ...                      
+0%                   14  ...                  0.12
+1-10%               142  ...                  0.12
+11-20%               89  ...                  0.16
+21-30%               35  ...                  0.19
+30%+                 50  ...                  0.24
+
+[5 rows x 4 columns]
+
+Correlation(discount%, view->cart rate)   = 0.54
+Correlation(discount%, view->purchase rate) = 0.64
+Interpretation: discount is more strongly associated with ADD-TO-CART than with
+final PURCHASE. This is a correlation, not a causal claim - price-sensitive shoppers
+may self-select into high-discount items regardless of the discount's causal effect,
+and we have not run a controlled experiment here.
+
+View->purchase conversion by price quintile:
+price
+(98.999, 270.0]   0.17
+(270.0, 366.0]    0.17
+(366.0, 494.0]    0.17
+(494.0, 650.0]    0.13
+(650.0, 1930.0]   0.15
+Name: view_to_purchase_rate, dtype: float64
+
+======================================================================
+4. REVIEWS & RATINGS
+======================================================================
+
+Conversion by rating band:
+            products  avg_view_to_purchase  avg_review_count
+rating                                                      
+(2.4, 3.5]        51                  0.16             95.92
+(3.5, 4.0]        90                  0.15            114.46
+(4.0, 4.5]       131                  0.16            128.33
+(4.5, 5.0]        58                  0.16            118.09
+
+Correlation(review_count, product_view) = -0.06
+
+High-rated (>=4.3) but below-median conversion products: 60
+
+======================================================================
+5. PRODUCT DISCOVERY FUNNEL (overall)
+======================================================================
+search           24278
+product_view    100277
+wishlist         22176
+add_to_cart      31904
+purchase         16252
+dtype: int64
+
+Overall view -> cart rate:      31.8%
+Overall cart -> purchase rate:  50.9%
+Overall view -> purchase rate:  16.2%
+
+Drop-off comparison:
+                          view_to_cart_dropoff  cart_to_purchase_dropoff
+choice_heavy_subcategory                                                
+Low-choice                                0.63                      0.46
+Choice-heavy                              0.75                      0.56
+
+All charts saved to ../charts/  |  Derived tables saved to ../data/derived/
